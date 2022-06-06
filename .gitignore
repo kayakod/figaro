@@ -3,3 +3,7 @@ precheck_results
 *.lst
 *.vcd
 *.gtkw
+*.vvp
+mgmt_core_wrapper
+caravel
+.vscode
