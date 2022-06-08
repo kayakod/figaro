@@ -1,11 +1,11 @@
 magic
 tech sky130A
 magscale 1 2
-timestamp 1654512265
+timestamp 1654675377
 << obsli1 >>
 rect 1104 2159 118864 157777
 << obsm1 >>
-rect 290 2128 119862 157808
+rect 106 2128 119862 157808
 << metal2 >>
 rect 2226 159200 2282 160000
 rect 6642 159200 6698 160000
@@ -528,7 +528,7 @@ rect 119342 0 119398 800
 rect 119526 0 119582 800
 rect 119802 0 119858 800
 << obsm2 >>
-rect 296 159144 2170 159338
+rect 112 159144 2170 159338
 rect 2338 159144 6586 159338
 rect 6754 159144 11002 159338
 rect 11170 159144 15418 159338
@@ -556,7 +556,8 @@ rect 104458 159144 108798 159338
 rect 108966 159144 113214 159338
 rect 113382 159144 117630 159338
 rect 117798 159144 119856 159338
-rect 296 856 119856 159144
+rect 112 856 119856 159144
+rect 222 800 238 856
 rect 406 800 514 856
 rect 682 800 698 856
 rect 866 800 974 856
@@ -2547,8 +2548,8 @@ port 609 nsew signal input
 string FIXED_BBOX 0 0 120000 160000
 string LEFclass BLOCK
 string LEFview TRUE
-string GDS_END 5403548
+string GDS_END 6367480
 string GDS_FILE /home/kaya/Desktop/caravel_example/caravel_example/openlane/user_proj_example/runs/user_proj_example/results/signoff/user_proj_example.magic.gds
-string GDS_START 67594
+string GDS_START 234958
 << end >>
 
