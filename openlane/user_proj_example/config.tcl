@@ -34,7 +34,7 @@ set ::env(VERILOG_FILES) "\
 ## Clock configurations
 set ::env(CLOCK_PORT) "wb_clk_i"
 set ::env(CLOCK_NET) "clk"
-set ::env(CLOCK_PERIOD) "10"
+set ::env(CLOCK_PERIOD) "20"
 
 set ::env(FP_SIZING) absolute
 set ::env(DIE_AREA) "0 0 600 800"
@@ -106,7 +106,7 @@ set ::env(PL_MAX_DISPLACEMENT_X) 800
 set ::env(PL_MAX_DISPLACEMENT_Y) 600
 set ::env(PL_RESIZER_BUFFER_INPUT_PORTS) 1
 set ::env(PL_RESIZER_BUFFER_OUTPUT_PORTS) 1
-set ::env(PL_RESIZER_DESIGN_OPTIMIZATIONS) 1
+set ::env(PL_RESIZER_DESIGN_OPTIMIZATIONS) 0
 set ::env(PL_RESIZER_TIMING_OPTIMIZATIONS) 1
 # antenna violations come from these buffers
 set ::env(DONT_USE_CELLS) "sky130_fd_sc_hd__buf_1 \

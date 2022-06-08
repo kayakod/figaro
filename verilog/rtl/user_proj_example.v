@@ -189,8 +189,9 @@ module entropy_RO #(parameter nRO = 40 )(
     assign o_xor_out_ROs_sampled = xor_out_sampled;
     assign o_xor_out_ROs_analog = xor_out_analog;
 
+    genvar i;
     generate
-    for (genvar i=nRO; i>=1; i=i-1)begin
+    for (i=nRO; i>=1; i=i-1)begin
         ring_osc RO_gen(.osc_out(ro_out[i]));
         mydff dff_gen(.clk(clk_dff), .D(ro_out[i]), .Q(ro_out_sampled[i]));
     end
@@ -226,11 +227,12 @@ module entropy_FIGARO #(parameter nFIGARO = 3 )(
     wire xor_figaro_sampled;
 
     assign o_xor_out_FIGAROs_sampled = xor_figaro_sampled;
-    assign o_FIGARO_out = figaro_outputs[1];
+    assign o_FIGARO_out = o_figaro_outputs[1];
     assign o_xor_out_FIGAROs_analog=xor_figaro_analog;
-
+    
+    genvar i;
     generate
-    for (genvar i=nFIGARO; i>=1; i=i-1)begin
+    for (i=nFIGARO; i>=1; i=i-1)begin
        figaro_poly3 FIGARO_gen(.o_figaro(o_figaro_outputs[i]));
        mydff dff_gen(.clk(clk_dff), .D(o_figaro_outputs[i]), .Q(figaro_outputs_sampled [i]));
     end
@@ -246,7 +248,7 @@ module entropy_FIGARO #(parameter nFIGARO = 3 )(
    multi_xor #(
      .length(nFIGARO)
      )xor_stage_analog(
-     .ros_i(figaro_outputs),
+     .ros_i(o_figaro_outputs),
      .rosx(xor_figaro_analog)
    );
 
@@ -284,11 +286,14 @@ endmodule
 module mydff(
     input clk,
     input D,
-    output reg Q
+    output Q
     );
+
+reg Q_q;
+assign Q = Q_q;
 always @(posedge clk)                                                    
 begin                                                                                               
-    Q <= D;                                                                      
+    Q_q <= D;                                                                      
 end
 endmodule
 /////////////////////////////////////////////////////////////////////////////////////
@@ -299,12 +304,23 @@ module multi_xor #(parameter length= 7)(
     output rosx
     );
     
-wire [length-1:1]Xor_out;
+wire [length-1:1] Xor_out;
+sky130_fd_sc_hd__xor2_4 xor_initial (
+	.A(ros_i[1]),
+	.B(ros_i[2]),
+	.X(Xor_out[1])
+);
+genvar i;
 generate 
-   for (genvar i=1; i<=length-2; i=i+1)begin
-       assign Xor_out[i+1] = Xor_out[i] ^ ros_i[i+2];
+   for (i=1; i<=length-2; i=i+1)begin
+	sky130_fd_sc_hd__xor2_4 xors (
+		.A(Xor_out[i]),
+		.B(ros_i[i+2]),
+		.X(Xor_out[i+1])
+	);
    end
 endgenerate
+
 assign rosx = Xor_out[length-1];
 endmodule
 ////////////////////////////////////////////////////////////////////////////
@@ -321,7 +337,11 @@ wire firoOut;
 garo_poly3  garo(.o_garo(garoOut)); 
 firo_poly3  firo(.o_firo(firoOut)); 
 
-assign o_figaro = garoOut ^ firoOut;
+sky130_fd_sc_hd__xor2_4 xor_poly3 (
+	.A(garoOut),
+	.B(firoOut),
+	.X(o_figaro)
+);
 endmodule
 ////////////////////////////////////////////////////////////////////////////
 
@@ -347,12 +367,13 @@ generate
    end
 endgenerate
 
-assign fXor[5] = f[15]   ^ f[14];
-assign fXor[4] = fXor[5] ^ f[7];
-assign fXor[3] = fXor[4] ^ f[6];
-assign fXor[2] = fXor[3] ^ f[5];
-assign fXor[1] = fXor[2] ^ f[4];
-assign f[0]    = fXor[1] ^ f[2];
+sky130_fd_sc_hd__xor2_4 xor_firo_1 (.A(f[15]), .B(f[14]), .X(fXor[5]));
+sky130_fd_sc_hd__xor2_4 xor_firo_2 (.A(fXor[5]), .B(f[7]), .X(fXor[4]));
+sky130_fd_sc_hd__xor2_4 xor_firo_3 (.A(fXor[4]), .B(f[6]), .X(fXor[3]));
+sky130_fd_sc_hd__xor2_4 xor_firo_4 (.A(fXor[3]), .B(f[5]), .X(fXor[2]));
+sky130_fd_sc_hd__xor2_4 xor_firo_5 (.A(fXor[2]), .B(f[4]), .X(fXor[1]));
+sky130_fd_sc_hd__xor2_4 xor_firo_6 (.A(fXor[1]), .B(f[2]), .X(f[0]));
+
 
 endmodule
 
@@ -370,16 +391,26 @@ assign o_garo = f[0];
 
 sky130_fd_sc_hd__inv_2 inverter1 (.A(f[1]),.Y(f[0]));
 sky130_fd_sc_hd__inv_2 inverter2 (.A(f[2]),.Y(f[1]));
-assign f[2] = f[0] ^ f[3];
+
+sky130_fd_sc_hd__xor2_4 xor_garo_1 (.A(f[0]), .B(f[3]), .X(f[2]));
+
 sky130_fd_sc_hd__inv_2 inverter3 (.A(f[4]),.Y(f[3]));
 sky130_fd_sc_hd__inv_2 inverter4 (.A(f[5]),.Y(f[4]));
-assign f[5] = fXor[0] ^ f[6];
+
+sky130_fd_sc_hd__xor2_4 xor_garo_2 (.A(f[0]), .B(f[6]), .X(f[5]));
+
 sky130_fd_sc_hd__inv_2 inverter5 (.A(f[7]),.Y(f[6]));
-assign f[7] = fXor[0] ^ f[8];
+
+sky130_fd_sc_hd__xor2_4 xor_garo_3 (.A(f[0]), .B(f[8]), .X(f[7]));
+
 sky130_fd_sc_hd__inv_2 inverter6 (.A(f[9]),.Y(f[8]));
-assign f[9] = f[0] ^ f[10];
+
+sky130_fd_sc_hd__xor2_4 xor_garo_4 (.A(f[0]), .B(f[10]), .X(f[9]));
+
 sky130_fd_sc_hd__inv_2 inverter7 (.A(f[11]),.Y(f[10]));
-assign f[11] = f[0] ^ f[12];
+
+sky130_fd_sc_hd__xor2_4 xor_garo_5 (.A(f[0]), .B(f[12]), .X(f[11]));
+
 sky130_fd_sc_hd__inv_2 inverter8 (.A(f[13]),.Y(f[12]));
 sky130_fd_sc_hd__inv_2 inverter9 (.A(f[14]),.Y(f[13]));
 sky130_fd_sc_hd__inv_2 inverter10 (.A(f[15]),.Y(f[14]));                          
@@ -387,7 +418,9 @@ sky130_fd_sc_hd__inv_2 inverter11 (.A(f[16]),.Y(f[15]));
 sky130_fd_sc_hd__inv_2 inverter12 (.A(f[17]),.Y(f[16]));
 sky130_fd_sc_hd__inv_2 inverter13 (.A(f[18]),.Y(f[17]));
 sky130_fd_sc_hd__inv_2 inverter14 (.A(f[19]),.Y(f[18]));
-assign f[19] = f[0] ^ f[20];
+
+sky130_fd_sc_hd__xor2_4 xor_garo_6 (.A(f[0]), .B(f[20]), .X(f[19]));
+
 sky130_fd_sc_hd__inv_2 inverter15 (.A(f[0]),.Y(f[20]));
 
 endmodule
