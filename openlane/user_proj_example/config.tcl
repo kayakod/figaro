@@ -29,7 +29,7 @@ set ::env(DESIGN_NAME) user_proj_example
 
 set ::env(VERILOG_FILES) "\
 	$::env(CARAVEL_ROOT)/verilog/rtl/defines.v \
-	$script_dir/../../verilog/rtl/user_proj_example.v"
+	$script_dir/../../../../verilog/rtl/user_proj_example.v"
 
 ## Clock configurations
 set ::env(CLOCK_PORT) "wb_clk_i"
@@ -39,7 +39,7 @@ set ::env(CLOCK_PERIOD) "20"
 set ::env(FP_SIZING) absolute
 set ::env(DIE_AREA) "0 0 600 800"
 
-set ::env(FP_PIN_ORDER_CFG) $script_dir/pin_order.cfg
+set ::env(FP_PIN_ORDER_CFG) $script_dir/../../pin_order.cfg
 
 set ::env(DRT_MAX_LAYER) {met4}
 set ::env(RT_MAX_LAYER) {met4}
@@ -51,7 +51,7 @@ set ::env(GND_NETS) [list {vssd1}]
 ##################################################################
 # Flow Control
 ##################################################################
-set ::env(RUN_ROUTING_DETAILED) 1
+set ::env(RUN_DRT) 1
 # If you're going to use multiple power domains, then disable cvc run.
 set ::env(RUN_CVC) 1
 set ::env(RUN_LVS) 1
@@ -115,7 +115,10 @@ set ::env(DONT_USE_CELLS) "sky130_fd_sc_hd__buf_1 \
 						   sky130_fd_sc_hd__clkbuf_1 \
 						   sky130_fd_sc_hd__clkbuf_2 \
 						   [listFromFile $::env(PDK_ROOT)/$::env(PDK)/libs.tech/openlane/$::env(STD_CELL_LIBRARY)/drc_exclude.cells]"
-set ::env(CELL_PAD) 6
+set ::env(DPL_CELL_PADDING) 6
+set ::env(GPL_CELL_PADDING) 0
+
+
 set ::env(PL_RESIZER_SETUP_MAX_BUFFER_PERCENT) 30
 set ::env(PL_RESIZER_HOLD_MAX_BUFFER_PERCENT) 70
 set ::env(PL_RESIZER_ALLOW_SETUP_VIOS) 0
@@ -136,8 +139,8 @@ set ::env(CTS_CLK_MAX_WIRE_LENGTH) 200
 ##################################################################
 # Global Routing
 ##################################################################
-set ::env(GLB_RT_ANT_ITERS) 20
-set ::env(GLB_RT_MAX_DIODE_INS_ITERS) 20
+# set ::env(GLB_RT_ANT_ITERS) 20
+# set ::env(GLB_RT_MAX_DIODE_INS_ITERS) 20
 set ::env(GLOBAL_ROUTER) fastroute
 set ::env(GLB_RESIZER_TIMING_OPTIMIZATIONS) 1
 set ::env(GLB_RESIZER_ALLOW_SETUP_VIOS) 0

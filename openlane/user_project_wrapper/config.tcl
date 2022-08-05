@@ -35,7 +35,7 @@ set ::env(DESIGN_NAME) user_project_wrapper
 ## Source Verilog Files
 set ::env(VERILOG_FILES) "\
 	$::env(CARAVEL_ROOT)/verilog/rtl/defines.v \
-	$script_dir/../../verilog/rtl/user_project_wrapper.v"
+	$script_dir/../../../../verilog/rtl/user_project_wrapper.v"
 
 ## Clock configurations
 set ::env(CLOCK_PORT) "wb_clk_i"
@@ -46,21 +46,21 @@ set ::env(CLOCK_PERIOD) "10"
 ## Internal Macros
 ### Macro PDN Connections
 set ::env(FP_PDN_MACRO_HOOKS) "\
-	mprj vccd1 vssd1"
+	mprj vccd1 vssd1 vccd1 vssd1"
 
 ### Macro Placement
-set ::env(MACRO_PLACEMENT_CFG) $script_dir/macro.cfg
+set ::env(MACRO_PLACEMENT_CFG) $script_dir/../../macro.cfg
 
 ### Black-box verilog and views
 set ::env(VERILOG_FILES_BLACKBOX) "\
 	$::env(CARAVEL_ROOT)/verilog/rtl/defines.v \
-	$script_dir/../../verilog/rtl/user_proj_example.v"
+	$script_dir/../../../../verilog/rtl/user_proj_example.v"
 
 set ::env(EXTRA_LEFS) "\
-	$script_dir/../../lef/user_proj_example.lef"
+	$script_dir/../../../../lef/user_proj_example.lef"
 
 set ::env(EXTRA_GDS_FILES) "\
-	$script_dir/../../gds/user_proj_example.gds"
+	$script_dir/../../../../gds/user_proj_example.gds"
 
 # set ::env(GLB_RT_MAXLAYER) 5
 set ::env(RT_MAX_LAYER) {met4}
@@ -71,6 +71,7 @@ set ::env(FP_PDN_CHECK_NODES) 0
 
 # The following is because there are no std cells in the example wrapper project.
 set ::env(SYNTH_TOP_LEVEL) 0
+set ::env(DPL_CELL_PADDING) 6
 set ::env(PL_RANDOM_GLB_PLACEMENT) 1
 
 set ::env(PL_RESIZER_DESIGN_OPTIMIZATIONS) 0
@@ -86,10 +87,7 @@ set ::env(TAP_DECAP_INSERTION) 0
 set ::env(CLOCK_TREE_SYNTH) 0
 
 # shift in ring gives xor violation
-set ::env(FP_PDN_CORE_RING_VOFFSET) 12.45
-set ::env(FP_PDN_CORE_RING_HOFFSET) $::env(FP_PDN_CORE_RING_VOFFSET)
+# set ::env(FP_PDN_CORE_RING_VOFFSET) 12.45
+# set ::env(FP_PDN_CORE_RING_HOFFSET) $::env(FP_PDN_CORE_RING_VOFFSET)
 
-
-set ::env(FP_PDN_CORE_RING_VOFFSET) 12.45
-set ::env(FP_PDN_CORE_RING_HOFFSET) $::env(FP_PDN_CORE_RING_VOFFSET)
 
