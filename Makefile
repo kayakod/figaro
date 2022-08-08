@@ -29,9 +29,9 @@ export PDKPATH?=$(PDK_ROOT)/sky130A
 export PDK?=sky130A
 
 # Install lite version of caravel, (1): caravel-lite, (0): caravel
-CARAVEL_LITE?=0
+CARAVEL_LITE?=1
 
-MPW_TAG ?= mpw-7a
+MPW_TAG ?= mpw-6c
 
 ifeq ($(CARAVEL_LITE),1)
 	CARAVEL_NAME := caravel-lite
