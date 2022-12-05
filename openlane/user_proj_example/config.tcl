@@ -29,7 +29,7 @@ set ::env(DESIGN_NAME) user_proj_example
 
 set ::env(VERILOG_FILES) "\
 	$::env(CARAVEL_ROOT)/verilog/rtl/defines.v \
-	$script_dir/../../verilog/rtl/user_proj_example.v"
+	$script_dir/../../../../verilog/rtl/user_proj_example.v"
 
 ## Clock configurations
 set ::env(CLOCK_PORT) "wb_clk_i"
@@ -39,7 +39,7 @@ set ::env(CLOCK_PERIOD) "20"
 set ::env(FP_SIZING) absolute
 set ::env(DIE_AREA) "0 0 600 800"
 
-set ::env(FP_PIN_ORDER_CFG) $script_dir/pin_order.cfg
+set ::env(FP_PIN_ORDER_CFG) $script_dir/../../pin_order.cfg
 
 set ::env(DRT_MAX_LAYER) {met4}
 set ::env(RT_MAX_LAYER) {met4}
